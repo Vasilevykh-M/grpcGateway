@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: db
+    build: ./
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always

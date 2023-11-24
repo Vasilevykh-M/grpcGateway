@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+option go_package = "pkg/articles";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+package articles;
+
+service Articles {
+  rpc GetArticleByID(Id) returns(JoinArticlePost) {
+    option (google.api.http) = {
+      get: "/article/{Id}"
+    };
+  }
+  rpc CreateArticle(Article) returns(Article) {
+    option (google.api.http) = {
+      post: "/article"
+      body: "*"
+    };
+  }
+  rpc DeleteArticle(Id) returns(Id) {
+    option (google.api.http) = {
+      delete: "/article/{Id}"
+    };
+  }
+  rpc CreatePost(Post) returns(Post) {
+    option (google.api.http) = {
+      post: "/article/{IdAuthor}/post"
+      body: "*"
+    };
+  }
+  rpc UpdateArticle(Article) returns(Article) {
+    option (google.api.http) = {
+      put: "/article/{Id}"
+      body: "*"
+    };
+  }
+}
+
+message Id {
+  int64 id = 1;
+}
+
+message Article {
+  int64 id = 1;
+  string name = 2;
+  int64 rating = 3;
+  google.protobuf.Timestamp created_at = 4;
+}
+
+message Post {
+  int64 id = 1;
+  int64 id_author = 2;
+  string name = 3;
+  int64 sales = 4;
+}
+
+message JoinArticlePost {
+  Article article = 1;
+  repeated Post post = 2;
+}
